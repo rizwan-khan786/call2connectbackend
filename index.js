@@ -1,20 +1,21 @@
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
+const templateRoutes = require("./routes/templateRouteswhatsapp");
+const whatsappRoutes = require("./routes/whatsappRoutes");
 
 const app = express();
-const PORT = 6000;
+const PORT = 8080;
 
-// Connect to MongoDB
 connectDB();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Routes
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/templates", require("./routes/templateRoutes"));
+app.use("/api/template2", templateRoutes);
+app.use("/api/whatsapp", whatsappRoutes);
 
 
 app.listen(PORT, () => {
