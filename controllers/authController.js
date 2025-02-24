@@ -50,3 +50,14 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: "Error logging in", error });
     }
 };
+
+
+// Get All Users
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({}, "email mobileNo"); // Excluding password for security
+        res.status(200).json({ users });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching users", error });
+    }
+};
