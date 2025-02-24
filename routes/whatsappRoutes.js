@@ -8,13 +8,13 @@
 
 const express = require("express");
 const { uploadMessage, upload,getAllMessages } = require("../controllers/messageController");
-const authMiddleware = require("../middleware/authMiddleware");
+//const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 // Protect route with authMiddleware
-router.post("/upload",authMiddleware, upload, uploadMessage);
-router.get("/messages",authMiddleware, getAllMessages);
+router.post("/upload", upload, uploadMessage);
+router.get("/messages", getAllMessages);
 
 
 module.exports = router;
