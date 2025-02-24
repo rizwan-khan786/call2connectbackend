@@ -65,24 +65,50 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage }).single("image");
 
+// const uploadMessage = async (req, res) => {
+//     try {
+//         if (!req.file) {
+//             return res.status(400).json({ message: "No file uploaded" });
+//         }
+
+//         const { message, number } = req.body;
+
+//         if (!message || !number) {
+//             return res.status(400).json({ message: "Message and number are required" });
+//         }
+
+//         const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+
+//         const newMessage = new Message({ message, number, imageUrl });
+//         await newMessage.save();
+
+//         res.status(200).json({ message: "Message uploaded successfully!", imageUrl });
+//     } catch (error) {
+//         console.error("Error uploading message:", error);
+//         res.status(500).json({ message: "Internal Server Error" });
+//     }
+// };
+
+
+
 const uploadMessage = async (req, res) => {
     try {
         if (!req.file) {
-            return res.status(400).json({ message: "No file uploaded" });
+            return res.status(400).json({ message: "No image uploaded" });
         }
 
-        const { message, number } = req.body;
+        const { message, number, email } = req.body;
 
-        if (!message || !number) {
-            return res.status(400).json({ message: "Message and number are required" });
+        if (!message || !number || !email) {
+            return res.status(400).json({ message: "Message, number, and email are required" });
         }
 
         const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
 
-        const newMessage = new Message({ message, number, imageUrl });
+        const newMessage = new Message({ message, number, email, imageUrl });  // ✅ Include email
         await newMessage.save();
 
-        res.status(200).json({ message: "Message uploaded successfully!", imageUrl });
+        res.status(201).json({ message: "Message uploaded successfully!", imageUrl });
     } catch (error) {
         console.error("Error uploading message:", error);
         res.status(500).json({ message: "Internal Server Error" });

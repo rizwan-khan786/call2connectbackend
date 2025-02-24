@@ -39,27 +39,7 @@ exports.createTemplate = async (req, res) => {
 
 
 
-// exports.getTemplateById = async (req, res) => {
-//     try {
-//         const { id } = req.params; // Extract ID from path parameters
 
-//         if (!id) {
-//             return res.status(400).json({ message: "Missing ID in URL" });
-//         }
-
-//         // Find template where `customLink` ends with the given ID
-//         const template = await Template.findOne({ customLink: new RegExp(id + "$") });
-
-//         if (!template) {
-//             return res.status(404).json({ message: "Details not found" });
-//         }
-
-//         res.json({ message: "Template found", data: template });
-//     } catch (error) {
-//         console.error("Error fetching template:", error);
-//         res.status(500).json({ message: "Internal server error" });
-//     }
-// };
 
 exports.getTemplateById = async (req, res) => {
     try {
@@ -178,3 +158,25 @@ exports.getTemplateById = async (req, res) => {
 };
 
 
+
+
+exports.getTemplatesByUser = async (req, res) => {
+    try {
+        // Ensure token is valid
+        if (!req.user) {
+            return res.status(401).json({ message: "Unauthorized: Token is missing or invalid" });
+        }
+
+        // Fetch templates where tokenData matches the logged-in user
+        const templates = await Template.find({ "tokenData._id": req.user._id });
+
+        if (templates.length === 0) {
+            return res.status(404).json({ message: "No generated links found for this user." });
+        }
+
+        res.status(200).json({ templates });
+    } catch (error) {
+        console.error("Error fetching user templates:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
