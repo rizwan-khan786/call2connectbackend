@@ -4,6 +4,7 @@ const connectDB = require("./config/db");
 const templateRoutes = require("./routes/templateRouteswhatsapp");
 const whatsappRoutes = require("./routes/whatsappRoutes");
 const path = require("path");
+const instanceRoutes = require("./routes/instanceRoutes");
 
 const app = express();
 const PORT = 8080;
@@ -20,6 +21,8 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/templates", require("./routes/templateRoutes"));
 app.use("/api/template2", templateRoutes);
 app.use("/api/whatsapp", whatsappRoutes);
+app.use("/api", instanceRoutes);
+
 
 
 app.listen(PORT, () => {
